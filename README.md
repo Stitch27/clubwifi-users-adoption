@@ -1,0 +1,1 @@
+# clubwifi-users-adoption
