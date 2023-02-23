@@ -19,6 +19,8 @@ public class ClubwifiUsersAdoptionEntity implements Serializable {
     private String user;
     @Column(name = "WCA_CODE")
     private String code;
+    @Column(name = "WCA_EMAIL")
+    private String email;
     @Column(name = "WCA_STATUS")
     private Long status;
     @Column(name = "WCA_CREATION_DATE")
