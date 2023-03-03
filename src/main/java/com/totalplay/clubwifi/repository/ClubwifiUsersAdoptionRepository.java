@@ -13,14 +13,14 @@ import com.totalplay.clubwifi.entity.ClubwifiUsersAdoptionEntity;
 @Transactional
 public interface ClubwifiUsersAdoptionRepository extends JpaRepository<ClubwifiUsersAdoptionEntity, Long> {
 
-    @Query(value = "SELECT * FROM TPBANKOWNER.WIFI_CLUB_ADOPTION WHERE WCA_USER = :user AND WCA_STATUS = :status", nativeQuery = true)
+    @Query(value = "SELECT * FROM MICROWNER.WIFI_CLUB_ADOPTION WHERE WCA_USER = :user AND WCA_STATUS = :status", nativeQuery = true)
     ClubwifiUsersAdoptionEntity getUser(@Param("user") String user, @Param("status") Long status);
 
-    @Query(value = "SELECT MAX(WCA_IDENTIFIER) FROM TPBANKOWNER.WIFI_CLUB_ADOPTION", nativeQuery = true)
+    @Query(value = "SELECT MAX(WCA_IDENTIFIER) FROM MICROWNER.WIFI_CLUB_ADOPTION", nativeQuery = true)
     Long getIdentifier();
 
     @Modifying
-    @Query(value = "INSERT INTO TPBANKOWNER.WIFI_CLUB_ADOPTION(WCA_IDENTIFIER, WCA_USER, WCA_CODE, WCA_EMAIL, WCA_STATUS, WCA_CREATION_DATE, WCA_CANCELLATION_DATE) VALUES(:identifier, :user, :code, :email, :status, :creationDate, :cancellationDate)", nativeQuery = true)
+    @Query(value = "INSERT INTO MICROWNER.WIFI_CLUB_ADOPTION(WCA_IDENTIFIER, WCA_USER, WCA_CODE, WCA_EMAIL, WCA_STATUS, WCA_CREATION_DATE, WCA_CANCELLATION_DATE) VALUES(:identifier, :user, :code, :email, :status, :creationDate, :cancellationDate)", nativeQuery = true)
     void registerUser(@Param("identifier") Long identifier, @Param("user") String user, @Param("code") String code, @Param("email") String email, @Param("status") Long status, @Param("creationDate") LocalDateTime creationDate, @Param("cancellationDate") LocalDateTime cancellationDate);
 
 }

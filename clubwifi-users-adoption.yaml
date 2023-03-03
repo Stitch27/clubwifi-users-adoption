@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: clubwifi-users-adoption
+  namespace: middleware-clubwifi
+  labels:
+    app: clubwifi-users-adoption
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: clubwifi-users-adoption
+  template:
+    metadata:
+      labels:
+        app: clubwifi-users-adoption
+    spec:
+      containers:
+        - name: clubwifi-users-adoption
+          image: swr.na-mexico-1.myhuaweicloud.com/cce-middleware-ms-soa/clubwifi-users-adoption-service:latest
+          env:
+            - name: spring.datasource.username
+              valueFrom:
+                secretKeyRef:
+                  name: connect-clubwifi
+                  key: user
+            - name: spring.datasource.password
+              valueFrom:
+                secretKeyRef:
+                  name: connect-clubwifi
+                  key: password
+          envFrom:
+            - configMapRef:
+                name: clubwifi-config
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8185
+      imagePullSecrets:
+        - name: default-secret
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: clubwifi-users-adoption
+  namespace: middleware-clubwifi
+  labels:
+    app: clubwifi-users-adoption
+  annotations:
+    kubernetes.io/elb.class: union
+    kubernetes.io/elb.id: 3ae3d247-dc04-42c0-a468-a16aeb63e078
+    kubernetes.io/elb.lb-algorithm: ROUND_ROBIN
+    kubernetes.io/elb.health-check-flag: 'off'
+spec:
+  ports:
+    - port: 8185
+      targetPort: 8185
+      protocol: TCP
+  selector:
+    app: clubwifi-users-adoption
+  type: LoadBalancer
+  loadBalancerIP: 10.218.46.248
+  externalTrafficPolicy: Cluster
